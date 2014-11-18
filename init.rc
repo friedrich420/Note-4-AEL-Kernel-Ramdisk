@@ -15,9 +15,6 @@ import /init.carrier.rc
 import /init.container.rc
 
 on early-init
-    # Force stock max frequency during initial boot
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2649600
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "umbrella_core"
 
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_adj -16
@@ -521,30 +518,6 @@ on boot
     chown system system /sys/class/kgsl/kgsl-3d0/dispatch/inflight
     chmod 0664  /sys/class/kgsl/kgsl-3d0/dispatch/inflight
 
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-
     # Assume SMP uses shared cpufreq policy for all CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
@@ -875,10 +848,6 @@ on charger
     write /sys/module/msm_pm/modes/cpu1/power_collapse/idle_enabled 0
     write /sys/module/msm_pm/modes/cpu2/power_collapse/idle_enabled 0
     write /sys/module/msm_pm/modes/cpu3/power_collapse/idle_enabled 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
 
 on property:vold.decrypt=trigger_reset_main
     class_reset main
@@ -1242,7 +1211,6 @@ on property:init.svc.bootanim=stopped
     start auditd
 
 on property:sys.boot_completed=1
-    write /sys/block/mmcblk0/queue/scheduler cfq
 
 # icd
 on property:init.svc.media=restarting
@@ -1275,4 +1243,10 @@ service charon /system/bin/charon
 # charon will setuid to vpn after getting necessary resources.
     group vpn net_admin inet
     disabled
+    oneshot
+
+# init AEL Kernel
+service adaminit /sbin/ael_post_boot.sh
+    class core
+    user root
     oneshot

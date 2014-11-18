@@ -1,0 +1,34 @@
+#!/sbin/busybox sh
+
+if [ "a$3" == "a" ]; then
+	evalcmd='eval "echo \$CPUVOLT$2"'
+	eval $evalcmd
+else
+	evalcmd='eval "CPUVOLT$2=$3"'
+	eval $evalcmd
+	evalcmd='eval "echo \$CPUVOLT$2"'
+	eval $evalcmd
+
+		echo "300mhz $CPUVOLT21" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "422mhz $CPUVOLT20" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "652mhz $CPUVOLT19" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "729mhz $CPUVOLT18" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "883mhz $CPUVOLT17" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "960mhz $CPUVOLT16" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1036mhz $CPUVOLT15" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1190mhz $CPUVOLT14" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1267mhz $CPUVOLT13" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1497mhz $CPUVOLT12" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1574mhz $CPUVOLT11" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1728mhz $CPUVOLT10" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "1958mhz $CPUVOLT9" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2265mhz $CPUVOLT8" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2342mhz $CPUVOLT7" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2419mhz $CPUVOLT6" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2496mhz $CPUVOLT5" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2572mhz $CPUVOLT4" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2649mhz $CPUVOLT3" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2726mhz $CPUVOLT2" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		echo "2803mhz $CPUVOLT1" > /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+		
+fi
